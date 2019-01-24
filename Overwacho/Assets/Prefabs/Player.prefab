@@ -20,6 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4982842430957724}
   - component: {fileID: 114064185177599056}
+  - component: {fileID: 114007409562204994}
+  - component: {fileID: 114063455513832890}
   - component: {fileID: 33037499601699846}
   - component: {fileID: 23537717295782110}
   - component: {fileID: 136692247648199744}
@@ -28,7 +30,7 @@ GameObject:
   - component: {fileID: 114244264906144862}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +168,36 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1305939004614898}
   m_Enabled: 1
+--- !u!114 &114007409562204994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1045993548797044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776eea9415bc236438708339cedea381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 4218115568241010}
+  layers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  maxDistance: 100
+  damage: 10
+--- !u!114 &114063455513832890
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1045993548797044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7184697146aeb3e47a47baeab6113ff2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  currentHealth: 100
 --- !u!114 &114064185177599056
 MonoBehaviour:
   m_ObjectHideFlags: 1

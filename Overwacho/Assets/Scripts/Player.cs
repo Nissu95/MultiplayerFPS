@@ -18,6 +18,12 @@ public class Player : NetworkBehaviour {
     
     void Start ()
     {
+        if (isLocalPlayer)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
         EnablePlayer();
         characterController = GetComponent<CharacterController>();
     }
