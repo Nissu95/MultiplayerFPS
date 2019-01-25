@@ -9,6 +9,13 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = "OnChangeHealth")]
     public int currentHealth = maxHealth;
 
+    float defaultSizeDeltaX;
+
+    private void Start()
+    {
+        defaultSizeDeltaX = healthBar.sizeDelta.x;
+    }
+
     public void TakeDamage(int amount)
     {
         if (!isServer)
@@ -24,7 +31,9 @@ public class Health : NetworkBehaviour
 
     void OnChangeHealth(int health)
     {
-        Debug.Log(health.ToString());
+        Vector2 healthbarSize = new Vector2((defaultSizeDeltaX * health) / maxHealth, healthBar.sizeDelta.y);
+
+        healthBar.sizeDelta = healthbarSize;
     }
 
 
