@@ -15,6 +15,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] ToggleEvent onToggleRemote;
 
     CharacterController characterController;
+    Animator animator;
     
     void Start ()
     {
@@ -26,6 +27,7 @@ public class Player : NetworkBehaviour {
 
         EnablePlayer();
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 	
 	void FixedUpdate()
@@ -38,6 +40,9 @@ public class Player : NetworkBehaviour {
 
         //Store the current vertical input in the float moveVertical.
         float moveVertical = Input.GetAxis("Vertical");
+
+        animator.SetFloat("Walk", moveVertical);
+        animator.SetFloat("Strafe", moveHorizontal);
 
         Vector3 movement = Vector3.zero;
 
