@@ -1,23 +1,33 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class ToggleEvent : UnityEvent<bool> { }
 
 public class Player : NetworkBehaviour {
-    
+
     [SerializeField] float speed;
     [SerializeField] float rotationSpeed;
     [SerializeField] Transform cameraTransform;
     [SerializeField] ToggleEvent onToggleShared;
     [SerializeField] ToggleEvent onToggleLocal;
     [SerializeField] ToggleEvent onToggleRemote;
+    [SerializeField] Renderer remoteCharacter;
+    [SerializeField] Material redTeamMaterial;
+    [SerializeField] Material blueTeamMaterial;
+    [SerializeField] Image teamColorImage;
+    [SerializeField] GameObject ragdollPrefab;
+    
+    [SyncVar(hook = "OnColorChanged")]
+    Color playerColor;
+    Team team;
 
     CharacterController characterController;
     Animator animator;
-    
-    void Start ()
+
+    void Start()
     {
         if (isLocalPlayer)
         {
@@ -28,6 +38,18 @@ public class Player : NetworkBehaviour {
         EnablePlayer();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        OnColorChanged(playerColor);
+    }
+
+    public void ChangeColor(Color color)
+    {
+        playerColor = color;
+    }
+
+    public Team GetTeam()
+    {
+        return team;
     }
 	
 	void FixedUpdate()
@@ -48,6 +70,9 @@ public class Player : NetworkBehaviour {
 
         movement += (transform.forward * moveVertical);
         movement += (transform.right * moveHorizontal);
+
+        if (!characterController.isGrounded)
+            movement += Vector3.down;
 
         movement.Normalize();
 
@@ -71,7 +96,7 @@ public class Player : NetworkBehaviour {
             onToggleRemote.Invoke(false);
     }
 
-    void EnablePlayer()
+    public void EnablePlayer()
     {
         onToggleShared.Invoke(true);
 
@@ -79,5 +104,38 @@ public class Player : NetworkBehaviour {
             onToggleLocal.Invoke(true);
         else
             onToggleRemote.Invoke(true);
+
+        Transform spawn = Spawner.singleton.GetSpawnPoint(team);
+
+        transform.position = spawn.position;
+        transform.rotation = spawn.rotation;
+    }
+
+    void OnColorChanged(Color color)
+    {
+        teamColorImage.color = color;
+
+        if (color == Color.red)
+        {
+            remoteCharacter.material = redTeamMaterial;
+            team = Team.Red;
+        }
+        else if (color == Color.blue)
+        {
+            remoteCharacter.material = blueTeamMaterial;
+            team = Team.Blue;
+        }
+    }
+
+    public void CreateRagdoll()
+    {
+        GameObject ragdoll = Instantiate<GameObject>(ragdollPrefab, transform.position, transform.rotation);
+
+        Renderer renderer = ragdoll.GetComponentInChildren<Renderer>();
+
+        if (team == Team.Red)
+            renderer.material = redTeamMaterial;
+        else if (team == Team.Blue)
+            renderer.material = blueTeamMaterial;
     }
 }

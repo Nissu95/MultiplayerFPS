@@ -5,15 +5,19 @@ public class Health : NetworkBehaviour
 {
     public const int maxHealth = 100;
     [SerializeField] RectTransform healthBar;
+    [SerializeField] float respawnTime;
 
     [SyncVar(hook = "OnChangeHealth")]
     public int currentHealth = maxHealth;
 
+    Player playerScript;
     float defaultSizeDeltaX;
+    
 
     private void Start()
     {
         defaultSizeDeltaX = healthBar.sizeDelta.x;
+        playerScript = GetComponent<Player>();
     }
 
     public void TakeDamage(int amount)
@@ -25,8 +29,22 @@ public class Health : NetworkBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Debug.Log("Muere");
+            RpcDeath();
+            currentHealth = maxHealth;
         }
+    }
+
+    [ClientRpc]
+    void RpcDeath()
+    {
+        playerScript.CreateRagdoll();
+        playerScript.DisablePlayer();
+        Invoke("Respawn", respawnTime);
+    }
+
+    void Respawn()
+    {
+        playerScript.EnablePlayer();
     }
 
     void OnChangeHealth(int health)

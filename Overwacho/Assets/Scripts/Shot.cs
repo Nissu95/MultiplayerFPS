@@ -13,11 +13,13 @@ public class Shot : NetworkBehaviour {
 
     Animator animator;
     AudioSource audioSource;
+    Player playerScript;
 
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();
         audioSource = GetComponent<AudioSource>();
+        playerScript = GetComponent<Player>();
     }
 
     private void Update()
@@ -27,7 +29,7 @@ public class Shot : NetworkBehaviour {
 
         if (Input.GetButtonDown("Fire1"))
         {
-            CmdFireShot(cameraTransform.position, cameraTransform.forward);
+            CmdFireShot(cameraTransform.position, cameraTransform.forward, playerScript.GetTeam());
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -37,7 +39,7 @@ public class Shot : NetworkBehaviour {
     }
 
     [Command]
-    void CmdFireShot(Vector3 origin, Vector3 direction)
+    void CmdFireShot(Vector3 origin, Vector3 direction, Team team)
     {
         RpcShotEffects();
 
@@ -46,7 +48,7 @@ public class Shot : NetworkBehaviour {
 
         if (Physics.Raycast(ray, out hit, maxDistance, layers))
         {
-            if (hit.transform.CompareTag("Player"))
+            if (hit.transform.CompareTag("Player") && team != hit.transform.GetComponent<Player>().GetTeam())
                 hit.transform.GetComponent<Health>().TakeDamage(damage);
         }
     }
@@ -58,3 +60,5 @@ public class Shot : NetworkBehaviour {
         audioSource.PlayOneShot(shotSound);
     }
 }
+
+public enum Team { Red, Blue };
