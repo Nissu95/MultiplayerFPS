@@ -19,6 +19,8 @@ public class Player : NetworkBehaviour {
     [SerializeField] Material blueTeamMaterial;
     [SerializeField] Image teamColorImage;
     [SerializeField] GameObject ragdollPrefab;
+
+    public Slider slider;
     
     [SyncVar(hook = "OnColorChanged")]
     Color playerColor;
@@ -78,12 +80,13 @@ public class Player : NetworkBehaviour {
 
         characterController.Move(movement * speed * Time.deltaTime);
 
-
         float xRotation = Input.GetAxis("Mouse X") * Time.deltaTime;
         float yRotation = Input.GetAxis("Mouse Y") * Time.deltaTime;
 
         transform.Rotate(0, xRotation * rotationSpeed, 0);
         cameraTransform.Rotate(-yRotation * rotationSpeed, 0, 0);
+
+        slider.value = GameManager.instance.porcent;
     }
 
     public void DisablePlayer()
