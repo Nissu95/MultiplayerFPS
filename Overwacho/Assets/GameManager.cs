@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance = null;
 
-    public int porcent = 50;
+    public int percent = 50;
 
     void Awake()
     {

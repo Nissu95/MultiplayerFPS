@@ -12,10 +12,10 @@ public class Point : MonoBehaviour {
             player = other.GetComponent<Player>();
 
         if (player && player.GetTeam() == Team.Blue)
-            GameManager.instance.porcent++;
+            GameManager.instance.percent++;
 
         if (player && player.GetTeam() == Team.Red)
-            GameManager.instance.porcent--;
+            GameManager.instance.percent--;
     }
 
 }

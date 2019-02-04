@@ -20,6 +20,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] Image teamColorImage;
     [SerializeField] GameObject ragdollPrefab;
 
+    //[SyncVar(hook = "OnSliderChanged")]
     public Slider slider;
     
     [SyncVar(hook = "OnColorChanged")]
@@ -56,6 +57,8 @@ public class Player : NetworkBehaviour {
 	
 	void FixedUpdate()
     {
+        slider.value = GameManager.instance.percent;
+
         if (!isLocalPlayer)
             return;
 
@@ -85,8 +88,6 @@ public class Player : NetworkBehaviour {
 
         transform.Rotate(0, xRotation * rotationSpeed, 0);
         cameraTransform.Rotate(-yRotation * rotationSpeed, 0, 0);
-
-        slider.value = GameManager.instance.porcent;
     }
 
     public void DisablePlayer()
