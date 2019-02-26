@@ -6,6 +6,7 @@ public class Point : MonoBehaviour {
 
     [SerializeField] float addPercentNumber = 2;
 
+    List<Player> players = new List<Player>();
     PointPercentageBar bar;
     bool isBlue = false;
     bool isRed = false;
@@ -17,34 +18,53 @@ public class Point : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        Player player = null;
-
         if (other.CompareTag("Player"))
-            player = other.GetComponent<Player>();
+            players.Add(other.GetComponent<Player>());
 
-        if (player && player.GetTeam() == Team.Blue)
-            isBlue = true;
-
-        if (player && player.GetTeam() == Team.Red)
-            isRed = true;
+        foreach (Player player in players)
+        {
+            if (player.GetTeam() == Team.Blue)
+                isBlue = true;
+            if (player.GetTeam() == Team.Red)
+                isRed = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Player player = null;
+        Player thisPlayer = null;
 
         if (other.CompareTag("Player"))
-            player = other.GetComponent<Player>();
+            thisPlayer = other.GetComponent<Player>();
 
-        if (player && player.GetTeam() == Team.Blue)
-            isBlue = false;
+        foreach (Player player in players)
+        {
+            if (thisPlayer == player)
+            {
+                if (player.GetTeam() == Team.Blue)
+                    isBlue = false;
+                if (player.GetTeam() == Team.Red)
+                    isRed = false;
+                players.Remove(player);
+            }
+        }
 
-        if (player && player.GetTeam() == Team.Red)
-            isRed = false;
     }
 
     private void FixedUpdate()
     {
+        foreach (Player player in players)
+        {
+            if (!player.GetComponent<Health>().isAlive)
+            {
+                if (player.GetTeam() == Team.Blue)
+                    isBlue = false;
+                if (player.GetTeam() == Team.Red)
+                    isRed = false;
+                players.Remove(player);
+            }
+        }
+
         if (isBlue && !isRed)
             bar.ChangePercentBlue(addPercentNumber);
         else if (!isBlue && isRed)

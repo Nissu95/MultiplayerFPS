@@ -10,14 +10,16 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = "OnChangeHealth")]
     public int currentHealth = maxHealth;
 
+    public bool isAlive = true;
+
     Player playerScript;
     float defaultSizeDeltaX;
-    
 
     private void Start()
     {
         defaultSizeDeltaX = healthBar.sizeDelta.x;
         playerScript = GetComponent<Player>();
+        isAlive = true;
     }
 
     public void TakeDamage(int amount)
@@ -37,6 +39,7 @@ public class Health : NetworkBehaviour
     [ClientRpc]
     void RpcDeath()
     {
+        isAlive = false;
         playerScript.CreateRagdoll();
         playerScript.DisablePlayer();
         Invoke("Respawn", respawnTime);
@@ -45,6 +48,7 @@ public class Health : NetworkBehaviour
     void Respawn()
     {
         playerScript.EnablePlayer();
+        isAlive = true;
     }
 
     void OnChangeHealth(int health)
