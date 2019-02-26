@@ -8,9 +8,10 @@ public class Billboard : MonoBehaviour
 
     void Update()
     {
-        mainCamera = Camera.main.transform;
-
-        if (mainCamera)
+        if (Camera.main)
+        {
+            mainCamera = Camera.main.transform;
             transform.rotation = Quaternion.LookRotation(transform.position - mainCamera.position);
+        }
     }
 }

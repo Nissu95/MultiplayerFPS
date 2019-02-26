@@ -13,7 +13,7 @@ public class Point : MonoBehaviour {
 
     private void Awake()
     {
-        bar = FindObjectOfType<PointPercentageBar>();
+        bar = GetComponentInChildren<PointPercentageBar>();
     }
 
     private void OnTriggerEnter(Collider other)

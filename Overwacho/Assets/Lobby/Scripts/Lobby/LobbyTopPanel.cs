@@ -35,6 +35,13 @@ namespace Prototype.NetworkLobby
             foreach (Transform t in transform)
             {
                 t.gameObject.SetActive(isDisplayed);
+
+                if (isDisplayed)
+                    Cursor.lockState = CursorLockMode.None;
+                else
+                    Cursor.lockState = CursorLockMode.Locked;
+
+                Cursor.visible = isDisplayed;
             }
 
             if (panelImage != null)

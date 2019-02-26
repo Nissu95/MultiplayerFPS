@@ -19,6 +19,10 @@ public class Player : NetworkBehaviour {
     [SerializeField] Material blueTeamMaterial;
     [SerializeField] Image teamColorImage;
     [SerializeField] GameObject ragdollPrefab;
+    [SerializeField] GameObject victory;
+    [SerializeField] GameObject defeat;
+
+    bool gameEnded = false;
     
     [SyncVar(hook = "OnColorChanged")]
     Color playerColor;
@@ -47,6 +51,18 @@ public class Player : NetworkBehaviour {
         playerColor = color;
     }
 
+    public void SetVictory()
+    {
+        gameEnded = true;
+        victory.SetActive(true);
+    }
+
+    public void SetDefeat()
+    {
+        gameEnded = true;
+        defeat.SetActive(true);
+    }
+
     public Team GetTeam()
     {
         return team;
@@ -54,7 +70,7 @@ public class Player : NetworkBehaviour {
 	
 	void FixedUpdate()
     {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer || gameEnded)
             return;
 
         //Store the current horizontal input in the float moveHorizontal.
