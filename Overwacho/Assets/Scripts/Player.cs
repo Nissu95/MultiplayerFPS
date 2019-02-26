@@ -19,9 +19,6 @@ public class Player : NetworkBehaviour {
     [SerializeField] Material blueTeamMaterial;
     [SerializeField] Image teamColorImage;
     [SerializeField] GameObject ragdollPrefab;
-
-    //[SyncVar(hook = "OnSliderChanged")]
-    public Slider slider;
     
     [SyncVar(hook = "OnColorChanged")]
     Color playerColor;
@@ -57,8 +54,6 @@ public class Player : NetworkBehaviour {
 	
 	void FixedUpdate()
     {
-        slider.value = GameManager.instance.percent;
-
         if (!isLocalPlayer)
             return;
 
