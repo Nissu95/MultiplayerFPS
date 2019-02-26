@@ -32,7 +32,6 @@ public class Health : NetworkBehaviour
         {
             currentHealth = 0;
             RpcDeath();
-            currentHealth = maxHealth;
         }
     }
 
@@ -48,6 +47,7 @@ public class Health : NetworkBehaviour
     void Respawn()
     {
         playerScript.EnablePlayer();
+        currentHealth = maxHealth;
         isAlive = true;
     }
 
