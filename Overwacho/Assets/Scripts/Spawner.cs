@@ -7,7 +7,6 @@ public class Spawner : MonoBehaviour {
 
     void Awake()
     {
-        DontDestroyOnLoad(this);
         if (singleton != null)
             Destroy(gameObject);
         else
